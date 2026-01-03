@@ -19,14 +19,14 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Initialize Next.js 14 project with TypeScript in repository root
-- [ ] T002 Install core dependencies: next@14, react@18, typescript@5.3+, tailwindcss@3.4, better-sqlite3, rss-parser, cheerio, fastest-levenshtein, @alicloud/bailian20231229, react-day-picker
-- [ ] T003 [P] Configure TypeScript with tsconfig.json (strict mode, path aliases)
-- [ ] T004 [P] Configure Tailwind CSS with tailwind.config.ts and globals.css
-- [ ] T005 [P] Create .env.local.example with ALIYUN_BAILIAN_API_KEY placeholder
-- [ ] T006 [P] Create .gitignore entries for .env.local, data/news.db, node_modules/, .next/
-- [ ] T007 [P] Create project folder structure: app/, components/, lib/, types/, data/, public/
-- [ ] T008 [P] Add placeholder.png to public/ folder (400x225px fallback thumbnail)
+- [X] T001 Initialize Next.js 14 project with TypeScript in repository root
+- [X] T002 Install core dependencies: next@14, react@18, typescript@5.3+, tailwindcss@3.4, better-sqlite3, rss-parser, cheerio, fastest-levenshtein, @alicloud/bailian20231229, react-day-picker
+- [X] T003 [P] Configure TypeScript with tsconfig.json (strict mode, path aliases)
+- [X] T004 [P] Configure Tailwind CSS with tailwind.config.ts and globals.css
+- [X] T005 [P] Create .env.local.example with ALIYUN_BAILIAN_API_KEY placeholder
+- [X] T006 [P] Create .gitignore entries for .env.local, data/news.db, node_modules/, .next/
+- [X] T007 [P] Create project folder structure: app/, components/, lib/, types/, data/, public/
+- [X] T008 [P] Add placeholder.png to public/ folder (400x225px fallback thumbnail)
 
 ---
 
@@ -36,19 +36,19 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T009 Create SQLite database schema in lib/db/schema.sql with articles and sources tables per data-model.md
-- [ ] T010 Create database client in lib/db/client.ts with better-sqlite3 connection to ./data/news.db
-- [ ] T011 Implement database initialization script in lib/db/init.ts that creates tables and indexes
-- [ ] T012 [P] Create TypeScript type definitions in types/article.ts for NewsArticle entity
-- [ ] T013 [P] Create TypeScript type definitions in types/source.ts for NewsSource entity
-- [ ] T014 [P] Create TypeScript type definitions in types/api.ts for all API request/response types
-- [ ] T015 Implement database query functions in lib/db/queries.ts (getArticles, saveArticle, getSources, saveSource, deleteSource, updateSource)
-- [ ] T016 Create root layout in app/layout.tsx with metadata, font, Tailwind CSS, and basic HTML structure
-- [ ] T017 [P] Create shared UI components in components/ui/Button.tsx with variants (primary, secondary, outline)
-- [ ] T018 [P] Create shared UI components in components/ui/Input.tsx with validation states
-- [ ] T019 [P] Create shared UI components in components/ui/Badge.tsx for source/tag display
-- [ ] T020 Add npm scripts to package.json: dev, build, start, db:init, db:reset, lint, format
-- [ ] T021 Seed initial test data from data/news-sources.json and data/news-articles.json into database
+- [X] T009 Create SQLite database schema in lib/db/schema.sql with articles and sources tables per data-model.md
+- [X] T010 Create database client in lib/db/client.ts with better-sqlite3 connection to ./data/news.db
+- [X] T011 Implement database initialization script in lib/db/init.ts that creates tables and indexes
+- [X] T012 [P] Create TypeScript type definitions in types/article.ts for NewsArticle entity
+- [X] T013 [P] Create TypeScript type definitions in types/source.ts for NewsSource entity
+- [X] T014 [P] Create TypeScript type definitions in types/api.ts for all API request/response types
+- [X] T015 Implement database query functions in lib/db/queries.ts (getArticles, saveArticle, getSources, saveSource, deleteSource, updateSource)
+- [X] T016 Create root layout in app/layout.tsx with metadata, font, Tailwind CSS, and basic HTML structure
+- [X] T017 [P] Create shared UI components in components/ui/Button.tsx with variants (primary, secondary, outline)
+- [X] T018 [P] Create shared UI components in components/ui/Input.tsx with validation states
+- [X] T019 [P] Create shared UI components in components/ui/Badge.tsx for source/tag display
+- [X] T020 Add npm scripts to package.json: dev, build, start, db:init, db:reset, lint, format
+- [X] T021 Seed initial test data from data/news-sources.json and data/news-articles.json into database
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -62,23 +62,23 @@
 
 ### Implementation for User Story 1
 
-- [ ] T022 [P] [US1] Implement RSS parser in lib/scraper/rss-parser.ts using rss-parser library to extract title, link, pubDate, description, image
-- [ ] T023 [P] [US1] Implement web scraper in lib/scraper/web-scraper.ts using cheerio to extract article metadata from HTML
-- [ ] T024 [P] [US1] Implement URL-based deduplicator in lib/scraper/deduplicator.ts with URL normalization and comparison
-- [ ] T025 [US1] Implement title similarity deduplicator in lib/scraper/deduplicator.ts using fastest-levenshtein with 85% threshold
-- [ ] T026 [P] [US1] Implement Aliyun Bailian client wrapper in lib/llm/bailian-client.ts with API key from env, error handling, timeout
-- [ ] T027 [P] [US1] Create LLM prompt templates in lib/llm/prompts.ts for summary generation (max 100 chars) and tag extraction (2-5 tags)
-- [ ] T028 [US1] Implement batch LLM processing function in lib/llm/bailian-client.ts with graceful degradation (store null on failure per FR-013)
-- [ ] T029 [US1] Create POST /api/scrape route in app/api/scrape/route.ts implementing scraping-api.yaml contract
-- [ ] T030 [US1] Integrate scraper, deduplicator, LLM enrichment, and database persistence in /api/scrape route handler
-- [ ] T031 [P] [US1] Create NewsCard component in components/NewsCard.tsx displaying title, source badge, timestamp (relative time), summary, tags as chips, thumbnail with placeholder fallback
-- [ ] T032 [P] [US1] Create EmptyState component in components/EmptyState.tsx for zero articles scenario per FR-024
-- [ ] T033 [P] [US1] Create LoadingSkeleton component in components/LoadingSkeleton.tsx with shimmer effect per FR-023
-- [ ] T034 [US1] Implement home page in app/page.tsx with "Fetch News Now" button, loading state, article grid (responsive 1/2/3 columns)
-- [ ] T035 [US1] Add client-side fetch logic in app/page.tsx to call POST /api/scrape and refresh article list
-- [ ] T036 [US1] Implement GET /api/articles route in app/api/articles/route.ts to return articles sorted by publishedAt DESC per articles-api.yaml
-- [ ] T037 [US1] Connect home page article grid to GET /api/articles endpoint with auto-refresh after scraping
-- [ ] T038 [US1] Add click handler to NewsCard title to open sourceURL in new tab per acceptance scenario 3
+- [X] T022 [P] [US1] Implement RSS parser in lib/scraper/rss-parser.ts using rss-parser library to extract title, link, pubDate, description, image
+- [X] T023 [P] [US1] Implement web scraper in lib/scraper/web-scraper.ts using cheerio to extract article metadata from HTML
+- [X] T024 [P] [US1] Implement URL-based deduplicator in lib/scraper/deduplicator.ts with URL normalization and comparison
+- [X] T025 [US1] Implement title similarity deduplicator in lib/scraper/deduplicator.ts using fastest-levenshtein with 85% threshold
+- [X] T026 [P] [US1] Implement Aliyun Bailian client wrapper in lib/llm/bailian-client.ts with API key from env, error handling, timeout
+- [X] T027 [P] [US1] Create LLM prompt templates in lib/llm/prompts.ts for summary generation (max 100 chars) and tag extraction (2-5 tags)
+- [X] T028 [US1] Implement batch LLM processing function in lib/llm/bailian-client.ts with graceful degradation (store null on failure per FR-013)
+- [X] T029 [US1] Create POST /api/scrape route in app/api/scrape/route.ts implementing scraping-api.yaml contract
+- [X] T030 [US1] Integrate scraper, deduplicator, LLM enrichment, and database persistence in /api/scrape route handler
+- [X] T031 [P] [US1] Create NewsCard component in components/NewsCard.tsx displaying title, source badge, timestamp (relative time), summary, tags as chips, thumbnail with placeholder fallback
+- [X] T032 [P] [US1] Create EmptyState component in components/EmptyState.tsx for zero articles scenario per FR-024
+- [X] T033 [P] [US1] Create LoadingSkeleton component in components/LoadingSkeleton.tsx with shimmer effect per FR-023
+- [X] T034 [US1] Implement home page in app/page.tsx with "Fetch News Now" button, loading state, article grid (responsive 1/2/3 columns)
+- [X] T035 [US1] Add client-side fetch logic in app/page.tsx to call POST /api/scrape and refresh article list
+- [X] T036 [US1] Implement GET /api/articles route in app/api/articles/route.ts to return articles sorted by publishedAt DESC per articles-api.yaml
+- [X] T037 [US1] Connect home page article grid to GET /api/articles endpoint with auto-refresh after scraping
+- [X] T038 [US1] Add click handler to NewsCard title to open sourceURL in new tab per acceptance scenario 3
 
 **Checkpoint**: At this point, User Story 1 should be fully functional - users can trigger scraping and view news cards
 
