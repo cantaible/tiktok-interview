@@ -1,50 +1,57 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+SYNC IMPACT REPORT
+===================
+Version Change: Initial → 1.0.0
+Action: Initial constitution ratification
+Modified Principles: N/A (new constitution)
+Added Sections: Core Principles (3), Technical Constraints, Governance
+Removed Sections: None
+Templates Status:
+  ✅ spec-template.md - aligned with spec-driven principle
+  ✅ plan-template.md - aligned with development workflow
+  ✅ tasks-template.md - aligned with MVP scope principle
+  ✅ checklist-template.md - compatible with current principles
+  ✅ agent-file-template.md - compatible with current principles
+Follow-up TODOs: None
+-->
+
+# Local News Harvester Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Spec-Driven Development (NON-NEGOTIABLE)
+All features MUST be defined in natural language technical specification documents before any implementation code is written. AI tools (Cursor, Claude Code, Windsurf) generate code exclusively from these specs. Direct coding without a spec is prohibited.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+**Rationale**: This project is a demonstration of AI-native development methodology. The spec serves as the single source of truth and enables reproducible, AI-assisted implementation while reducing miscommunication between intent and code.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. Local-First Architecture
+The application MUST run entirely on the local machine without requiring cloud deployment or external backend services. All data persistence MUST use local storage mechanisms (SQLite, IndexedDB, or local JSON files).
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+**Rationale**: This MVP prioritizes ease of setup, user data privacy, and eliminates infrastructure complexity. Users should be able to run the application with simple commands (npm run dev) without server provisioning.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### III. MVP Scope Discipline
+Implementation MUST deliver only the four core modules: (1) Data Source Configuration, (2) Local Scraping & Processing with LLM integration via Aliyun Bailian, (3) Structured Presentation with filtering, (4) Local Storage & Export. No feature beyond the defined functional requirements may be added without spec amendment.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+**Rationale**: Time-boxed interview project requires strict scope control to ensure end-to-end completion. Feature creep undermines delivery of a working, demonstrable product.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+## Technical Constraints
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+All development MUST comply with the following non-negotiable constraints:
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- **AI Tooling**: Use Cursor (Composer Mode), Claude Code (CLI), or Windsurf for code generation
+- **LLM API**: Backend LLM capabilities (summarization, tagging) MUST use Aliyun Bailian platform (DeepSeek-V3, DeepSeek-R1, or Qwen-Max recommended)
+- **API Security**: API keys MUST be stored in .env files and loaded via environment variables; hardcoded keys are prohibited
+- **Technology Stack**: Recommended Next.js/React or pure frontend serverless solution; backend if used must run locally
+- **Deliverables**: Must include spec.md, source code with package.json/requirements.txt, process documentation, and proof-of-work screenshots
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution is the authoritative guide for all development decisions. Any deviation from stated principles must be documented with explicit justification.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Amendment Process**: Constitution changes require updating this document with version increment, rationale documentation, and propagation to dependent templates (spec-template.md, plan-template.md, tasks-template.md).
+
+**Versioning Policy**: Follow semantic versioning—MAJOR for principle removals/redefinitions, MINOR for new principles, PATCH for clarifications.
+
+**Compliance**: All specs and implementation reviews must verify adherence to the three core principles and technical constraints.
+
+**Version**: 1.0.0 | **Ratified**: 2026-01-03 | **Last Amended**: 2026-01-03

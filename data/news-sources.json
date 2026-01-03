@@ -1,0 +1,92 @@
+[
+  {
+    "id": "source-001",
+    "sourceType": "RSS",
+    "url": "https://www.jiqizhixin.com/rss",
+    "displayName": "机器之心",
+    "enabled": true,
+    "lastScrapedAt": "2026-01-04T10:30:00Z",
+    "errorCount": 0
+  },
+  {
+    "id": "source-002",
+    "sourceType": "RSS",
+    "url": "https://www.qbitai.com/feed",
+    "displayName": "量子位",
+    "enabled": true,
+    "lastScrapedAt": "2026-01-04T10:28:00Z",
+    "errorCount": 0
+  },
+  {
+    "id": "source-003",
+    "sourceType": "RSS",
+    "url": "https://techcrunch.com/feed/",
+    "displayName": "TechCrunch",
+    "enabled": true,
+    "lastScrapedAt": "2026-01-04T10:25:00Z",
+    "errorCount": 0
+  },
+  {
+    "id": "source-004",
+    "sourceType": "RSS",
+    "url": "https://www.theverge.com/rss/index.xml",
+    "displayName": "The Verge",
+    "enabled": true,
+    "lastScrapedAt": "2026-01-04T10:20:00Z",
+    "errorCount": 0
+  },
+  {
+    "id": "source-005",
+    "sourceType": "WEB",
+    "url": "https://openai.com/blog",
+    "displayName": "OpenAI Blog",
+    "enabled": true,
+    "lastScrapedAt": "2026-01-04T09:45:00Z",
+    "errorCount": 0
+  },
+  {
+    "id": "source-006",
+    "sourceType": "RSS",
+    "url": "https://www.infoq.cn/feed",
+    "displayName": "InfoQ中国",
+    "enabled": true,
+    "lastScrapedAt": "2026-01-04T09:30:00Z",
+    "errorCount": 0
+  },
+  {
+    "id": "source-007",
+    "sourceType": "WEB",
+    "url": "https://www.36kr.com/newsflashes",
+    "displayName": "36氪快讯",
+    "enabled": true,
+    "lastScrapedAt": "2026-01-04T09:15:00Z",
+    "errorCount": 0
+  },
+  {
+    "id": "source-008",
+    "sourceType": "RSS",
+    "url": "https://www.artificialintelligence-news.com/feed/",
+    "displayName": "AI News",
+    "enabled": true,
+    "lastScrapedAt": "2026-01-04T08:50:00Z",
+    "errorCount": 0
+  },
+  {
+    "id": "source-009",
+    "sourceType": "RSS",
+    "url": "https://venturebeat.com/feed/",
+    "displayName": "VentureBeat",
+    "enabled": false,
+    "lastScrapedAt": "2026-01-03T18:30:00Z",
+    "errorCount": 2
+  },
+  {
+    "id": "source-010",
+    "sourceType": "WEB",
+    "url": "https://blogs.nvidia.com/",
+    "displayName": "NVIDIA Blog",
+    "enabled": true,
+    "lastScrapedAt": "2026-01-04T08:00:00Z",
+    "errorCount": 0
+  }
+]
