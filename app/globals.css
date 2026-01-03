@@ -38,3 +38,11 @@ body {
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
+
+/* React Day Picker custom styles */
+.rdp-custom {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: #3b82f6;
+  --rdp-background-color: #e0f2fe;
+  font-size: 0.875rem;
+}

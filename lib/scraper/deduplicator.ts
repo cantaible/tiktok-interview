@@ -3,6 +3,10 @@ import { distance } from "fastest-levenshtein";
 export interface ArticleForDedup {
   sourceURL: string;
   title: string;
+  sourceName: string;
+  publishedAt?: string;
+  description?: string;
+  thumbnail?: string;
 }
 
 // URL-based deduplication
@@ -62,10 +66,10 @@ function normalizeURL(url: string): string {
     paramsToRemove.forEach((param) => parsed.searchParams.delete(param));
 
     // Remove trailing slashes
-    let path = parsed.pathname.replace(/\/+$/, "");
+    const path = parsed.pathname.replace(/\/+$/, "");
 
     // Remove www subdomain
-    let host = parsed.hostname.replace(/^www\./, "");
+    const host = parsed.hostname.replace(/^www\./, "");
 
     return `${parsed.protocol}//${host}${path}${parsed.search}`;
   } catch {

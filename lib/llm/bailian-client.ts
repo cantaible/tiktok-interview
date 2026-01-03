@@ -60,7 +60,8 @@ export class BailianClient {
     }
   }
 
-  async generateTags(title: string, content?: string): Promise<string[] | null> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async generateTags(title: string, _content?: string): Promise<string[] | null> {
     if (!this.isConfigured()) {
       return null;
     }

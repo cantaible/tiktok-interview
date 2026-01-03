@@ -12,7 +12,7 @@ export function getArticles(filters?: {
   limit?: number;
 }): NewsArticle[] {
   let query = "SELECT * FROM articles WHERE 1=1";
-  const params: any[] = [];
+  const params: (string | number)[] = [];
 
   if (filters?.date) {
     query += " AND date(publishedAt) = date(?)";
@@ -119,7 +119,7 @@ export function getArticleStats(): {
 
 export function getSources(filters?: { enabled?: boolean }): NewsSource[] {
   let query = "SELECT * FROM sources";
-  const params: any[] = [];
+  const params: (number | string)[] = [];
 
   if (filters?.enabled !== undefined) {
     query += " WHERE enabled = ?";

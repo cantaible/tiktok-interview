@@ -42,18 +42,18 @@ export async function parseRSSFeed(url: string, sourceName?: string): Promise<RS
         title: item.title || "Untitled",
         link: item.link || "",
         pubDate: item.pubDate || item.isoDate,
-        description: item.contentSnippet || item.content || item.description,
+        description: item.contentSnippet || item.content || item.summary || "",
         thumbnail,
         sourceName: detectedName,
       };
     });
-  } catch (error) {
+  } catch (error: unknown) {
     throw new Error(
       `RSS parsing failed for ${url}: ${error instanceof Error ? error.message : String(error)}`
     );
   }
 }
 
-export function detectRSSName(feed: Parser.Output<any>): string {
+export function detectRSSName(feed: Parser.Output<Record<string, unknown>>): string {
   return feed.title || "Unknown Source";
 }

@@ -1,7 +1,6 @@
 // LLM prompt templates for Aliyun Bailian
 
 export function generateSummaryPrompt(title: string, content?: string): string {
-  const text = content || title;
   return `Please generate a one-sentence summary (maximum 100 characters) for the following article:
 
 Title: ${title}
@@ -17,7 +16,7 @@ Summary:`;
 }
 
 export function generateTagsPrompt(title: string, content?: string): string {
-  const text = content || title;
+
   return `Please extract 2-5 relevant topic tags for the following article:
 
 Title: ${title}

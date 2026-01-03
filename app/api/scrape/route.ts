@@ -6,7 +6,7 @@ import { deduplicate } from "@/lib/scraper/deduplicator";
 import { llmClient } from "@/lib/llm/bailian-client";
 import { NewsArticle } from "@/types/article";
 import { ScrapeRequest, ScrapeResponse } from "@/types/api";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "crypto";
 
 export async function POST(request: NextRequest) {
   try {
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
       const enrichment = enrichmentResults[i] || { summary: null, tags: null };
 
       const newsArticle: NewsArticle = {
-        id: `article-${uuidv4()}`,
+        id: `article-${randomUUID()}`,
         title: article.title,
         sourceURL: article.sourceURL,
         sourceName: article.sourceName,

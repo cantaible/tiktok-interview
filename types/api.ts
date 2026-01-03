@@ -64,7 +64,7 @@ export interface GetSourcesResponse {
 export interface CreateSourceRequest {
   sourceType: "RSS" | "WEB";
   url: string;
-  displayName: string;
+  displayName?: string;
 }
 
 export interface CreateSourceResponse {
@@ -88,13 +88,15 @@ export interface DeleteSourceResponse {
 
 // Export API
 export interface ExportArticle {
+  id: string;
   title: string;
   sourceURL: string;
   sourceName: string;
   publishedAt: string;
-  summary: string;
-  tags: string; // Comma-separated
-  thumbnailURL: string;
+  scrapedAt: string;
+  summary: string | null;
+  tags: string[] | null;
+  thumbnailURL: string | null;
 }
 
 // Error response
