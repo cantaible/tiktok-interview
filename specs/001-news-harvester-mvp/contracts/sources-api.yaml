@@ -1,0 +1,202 @@
+openapi: 3.1.0
+info:
+  title: News Harvester Sources API
+  version: 1.0.0
+  description: API for managing news sources
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+
+paths:
+  /sources:
+    get:
+      summary: Get all news sources
+      description: Retrieve list of configured news sources
+      operationId: getSources
+      tags:
+        - Sources
+      parameters:
+        - name: enabled
+          in: query
+          schema:
+            type: boolean
+          description: Filter by enabled/disabled status
+      responses:
+        '200':
+          description: Successfully retrieved sources
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sources:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Source'
+    
+    post:
+      summary: Add a new news source
+      description: Create a new RSS or web source
+      operationId: createSource
+      tags:
+        - Sources
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sourceType
+                - url
+                - displayName
+              properties:
+                sourceType:
+                  type: string
+                  enum: [RSS, WEB]
+                  example: "RSS"
+                url:
+                  type: string
+                  format: uri
+                  example: "https://www.jiqizhixin.com/rss"
+                displayName:
+                  type: string
+                  example: "机器之心"
+      responses:
+        '201':
+          description: Source created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  source:
+                    $ref: '#/components/schemas/Source'
+        '400':
+          description: Invalid source data or duplicate URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /sources/{id}:
+    delete:
+      summary: Delete a news source
+      description: Remove a news source by ID (articles from this source are NOT deleted)
+      operationId: deleteSource
+      tags:
+        - Sources
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "source-001"
+      responses:
+        '200':
+          description: Source deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Source deleted successfully"
+        '404':
+          description: Source not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      summary: Update source status
+      description: Enable/disable a news source
+      operationId: updateSource
+      tags:
+        - Sources
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+                  example: false
+      responses:
+        '200':
+          description: Source updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  source:
+                    $ref: '#/components/schemas/Source'
+
+components:
+  schemas:
+    Source:
+      type: object
+      required:
+        - id
+        - sourceType
+        - url
+        - displayName
+        - enabled
+        - errorCount
+      properties:
+        id:
+          type: string
+          example: "source-001"
+        sourceType:
+          type: string
+          enum: [RSS, WEB]
+          example: "RSS"
+        url:
+          type: string
+          format: uri
+          example: "https://www.jiqizhixin.com/rss"
+        displayName:
+          type: string
+          example: "机器之心"
+        enabled:
+          type: boolean
+          example: true
+        lastScrapedAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2026-01-04T10:30:00Z"
+        errorCount:
+          type: integer
+          minimum: 0
+          example: 0
+          description: Consecutive scraping failures (auto-disabled at 3+)
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Source not found"

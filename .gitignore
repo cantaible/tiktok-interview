@@ -1,0 +1,55 @@
+# Private folder - only visible to owner, never committed to git
+private/
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js
+.next/
+out/
+build/
+dist/
+
+# Environment variables
+.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Database
+data/news.db
+data/news.db-shm
+data/news.db-wal
+*.db
+*.db-journal
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Testing
+coverage/
+.nyc_output
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Misc
+Thumbs.db
+*.tmp

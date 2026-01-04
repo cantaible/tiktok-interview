@@ -1,0 +1,107 @@
+openapi: 3.1.0
+info:
+  title: News Harvester Scraping API
+  version: 1.0.0
+  description: API for triggering news scraping from configured sources
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+
+paths:
+  /scrape:
+    post:
+      summary: Trigger news scraping
+      description: |
+        Scrapes articles from specified sources (or all enabled sources if none specified).
+        Runs deduplication, LLM enrichment (summary/tags), and persists to database.
+      operationId: triggerScrape
+      tags:
+        - Scraping
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sourceIds:
+                  type: array
+                  items:
+                    type: string
+                  description: Optional array of source IDs to scrape. If empty, scrapes all enabled sources.
+                  example: ["source-001", "source-002"]
+                enrichWithLLM:
+                  type: boolean
+                  default: true
+                  description: Whether to call Aliyun Bailian for summary/tags generation
+      responses:
+        '200':
+          description: Scraping completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  scraped:
+                    type: integer
+                    description: Number of articles fetched
+                    example: 25
+                  deduplicated:
+                    type: integer
+                    description: Number of duplicates removed
+                    example: 3
+                  enriched:
+                    type: integer
+                    description: Number of articles enriched with LLM
+                    example: 22
+                  saved:
+                    type: integer
+                    description: Number of new articles saved to database
+                    example: 22
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        sourceId:
+                          type: string
+                        sourceName:
+                          type: string
+                        error:
+                          type: string
+                    description: Sources that failed to scrape
+                    example:
+                      - sourceId: "source-009"
+                        sourceName: "VentureBeat"
+                        error: "RSS feed unreachable: 503 Service Unavailable"
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error during scraping
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: "Database connection failed"
+        details:
+          type: string
+          description: Optional detailed error message for debugging

@@ -1,0 +1,210 @@
+openapi: 3.1.0
+info:
+  title: News Harvester Articles API
+  version: 1.0.0
+  description: API for fetching and filtering news articles
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+
+paths:
+  /articles:
+    get:
+      summary: Get filtered articles
+      description: Fetch articles with optional filters for date, source, and tags
+      operationId: getArticles
+      tags:
+        - Articles
+      parameters:
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date
+            example: "2026-01-04"
+          description: Filter by publish date (ISO 8601 date)
+        - name: sources
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          description: Filter by source names (e.g., ?sources=机器之心&sources=TechCrunch)
+          example: ["机器之心", "TechCrunch"]
+        - name: tags
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          description: Filter by tags (e.g., ?tags=AI&tags=OpenAI)
+          example: ["AI", "OpenAI"]
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [newest, oldest]
+            default: newest
+          description: Sort order by publish date
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 500
+            default: 100
+          description: Maximum number of articles to return
+      responses:
+        '200':
+          description: Successfully retrieved articles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  articles:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Article'
+                  total:
+                    type: integer
+                    description: Total count matching filters (before limit)
+                    example: 47
+                  filters:
+                    type: object
+                    description: Echo of applied filters
+                    properties:
+                      date:
+                        type: string
+                        nullable: true
+                      sources:
+                        type: array
+                        items:
+                          type: string
+                      tags:
+                        type: array
+                        items:
+                          type: string
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /articles/stats:
+    get:
+      summary: Get article statistics
+      description: Get aggregated stats for filters (available sources, tags, date range)
+      operationId: getArticleStats
+      tags:
+        - Articles
+      responses:
+        '200':
+          description: Statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalArticles:
+                    type: integer
+                    example: 250
+                  sources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: "机器之心"
+                        count:
+                          type: integer
+                          example: 35
+                  tags:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: "AI"
+                        count:
+                          type: integer
+                          example: 120
+                    description: Top 50 most frequent tags
+                  dateRange:
+                    type: object
+                    properties:
+                      earliest:
+                        type: string
+                        format: date-time
+                        example: "2026-01-01T00:00:00Z"
+                      latest:
+                        type: string
+                        format: date-time
+                        example: "2026-01-04T23:59:59Z"
+
+components:
+  schemas:
+    Article:
+      type: object
+      required:
+        - id
+        - title
+        - sourceURL
+        - sourceName
+        - publishedAt
+        - scrapedAt
+      properties:
+        id:
+          type: string
+          example: "article-001"
+        title:
+          type: string
+          example: "OpenAI发布GPT-5：推理能力大幅提升"
+        sourceURL:
+          type: string
+          format: uri
+          example: "https://openai.com/blog/gpt-5-announcement"
+        sourceName:
+          type: string
+          example: "OpenAI Blog"
+        publishedAt:
+          type: string
+          format: date-time
+          example: "2026-01-04T08:00:00Z"
+        scrapedAt:
+          type: string
+          format: date-time
+          example: "2026-01-04T09:45:00Z"
+        summary:
+          type: string
+          nullable: true
+          maxLength: 100
+          example: "OpenAI正式发布GPT-5模型，在推理、数学和编程能力上较GPT-4提升显著。"
+        tags:
+          type: array
+          items:
+            type: string
+          nullable: true
+          minItems: 2
+          maxItems: 5
+          example: ["OpenAI", "GPT-5", "大模型", "AI"]
+        thumbnailURL:
+          type: string
+          format: uri
+          nullable: true
+          example: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400"
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Invalid date format"

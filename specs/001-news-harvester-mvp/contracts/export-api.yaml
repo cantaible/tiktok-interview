@@ -1,0 +1,145 @@
+openapi: 3.1.0
+info:
+  title: News Harvester Export API
+  version: 1.0.0
+  description: API for exporting articles to JSON/CSV formats
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+
+paths:
+  /export:
+    get:
+      summary: Export articles
+      description: |
+        Export articles matching current filters to JSON or CSV format.
+        Returns a file download (Content-Disposition: attachment).
+      operationId: exportArticles
+      tags:
+        - Export
+      parameters:
+        - name: format
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [json, csv]
+          description: Export format
+          example: "json"
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Filter by publish date (same as /articles API)
+        - name: sources
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          description: Filter by source names
+        - name: tags
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          description: Filter by tags
+      responses:
+        '200':
+          description: Export file ready for download
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+                example: 'attachment; filename="news-export-2026-01-04.json"'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExportArticle'
+              example:
+                - id: "article-001"
+                  title: "OpenAI发布GPT-5"
+                  link: "https://openai.com/blog/gpt-5"
+                  source: "OpenAI Blog"
+                  publishedAt: "2026-01-04T08:00:00Z"
+                  summary: "OpenAI正式发布GPT-5模型..."
+                  tags: "OpenAI,GPT-5,AI"
+            text/csv:
+              schema:
+                type: string
+                format: binary
+              example: |
+                id,title,link,source,publishedAt,summary,tags
+                article-001,"OpenAI发布GPT-5",https://openai.com/blog/gpt-5,"OpenAI Blog",2026-01-04T08:00:00Z,"OpenAI正式发布GPT-5...","OpenAI,GPT-5,AI"
+        '400':
+          description: Invalid export parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    ExportArticle:
+      type: object
+      description: Simplified article format for export (flattened structure)
+      required:
+        - id
+        - title
+        - link
+        - source
+        - publishedAt
+      properties:
+        id:
+          type: string
+          example: "article-001"
+        title:
+          type: string
+          example: "OpenAI发布GPT-5：推理能力大幅提升"
+        link:
+          type: string
+          format: uri
+          description: Renamed from sourceURL for clarity
+          example: "https://openai.com/blog/gpt-5-announcement"
+        source:
+          type: string
+          description: Renamed from sourceName
+          example: "OpenAI Blog"
+        publishedAt:
+          type: string
+          format: date-time
+          example: "2026-01-04T08:00:00Z"
+        summary:
+          type: string
+          nullable: true
+          example: "OpenAI正式发布GPT-5模型，在推理、数学和编程能力上较GPT-4提升显著。"
+        tags:
+          type: string
+          description: Comma-separated tags (CSV-friendly format)
+          example: "OpenAI,GPT-5,大模型,AI"
+          nullable: true
+        thumbnailURL:
+          type: string
+          format: uri
+          nullable: true
+          example: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400"
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Invalid format parameter"
