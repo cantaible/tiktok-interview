@@ -117,7 +117,10 @@ export default function HomePage() {
   const handleFetchNews = async () => {
     try {
       setScraping(true);
-      toast.loading("Fetching news from sources...", { id: "scraping" });
+      toast.loading("Fetching news from sources...", { 
+        id: "scraping",
+        duration: Infinity // 持续显示直到手动关闭
+      });
 
       const response = await fetch("/api/scrape", {
         method: "POST",

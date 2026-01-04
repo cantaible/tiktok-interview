@@ -162,6 +162,18 @@ export function useAIRefresh(onComplete?: () => void) {
    */
   const startRefresh = useCallback(async (articleIds: string[]) => {
     try {
+      // 先检查 API key 是否配置
+      const configResponse = await fetch('/api/ai-config');
+      const configData = await configResponse.json();
+      
+      if (!configData.isConfigured) {
+        toast.error(
+          '⚠️ 未配置 API Key！请在 .env.local 中设置 DASHSCOPE_API_KEY',
+          { duration: 5000 }
+        );
+        return;
+      }
+
       setIsRefreshing(true);
       setProgress({
         percentage: 0,
