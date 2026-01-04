@@ -6,6 +6,15 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 255, 255, 255;
   --background-end-rgb: 255, 255, 255;
+  
+  /* v2 gradient design tokens */
+  --gradient-start: #3B82F6;
+  --gradient-end: #6366F1;
+  
+  /* glassmorphism design tokens */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-blur: blur(8px);
 }
 
 body {

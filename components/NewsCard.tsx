@@ -19,7 +19,7 @@ export function NewsCard({ article }: NewsCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-200">
+    <div className="bg-white rounded-xl border-2 border-transparent bg-gradient-to-br from-blue-50 to-purple-50 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
       {/* Thumbnail */}
       <div className="relative w-full h-48 bg-gray-100">
         <Image
@@ -35,7 +35,7 @@ export function NewsCard({ article }: NewsCardProps) {
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-4 bg-white">
         {/* Source and Time */}
         <div className="flex items-center justify-between mb-2">
           <Badge variant="info">{article.sourceName}</Badge>
@@ -60,9 +60,12 @@ export function NewsCard({ article }: NewsCardProps) {
         {article.tags && article.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {article.tags.map((tag, index) => (
-              <Badge key={index} variant="default">
+              <span
+                key={index}
+                className="px-3 py-1 text-xs font-medium text-white bg-gradient-to-r from-purple-500 to-pink-500 rounded-full hover:scale-105 transition-transform duration-200"
+              >
                 {tag}
-              </Badge>
+              </span>
             ))}
           </div>
         )}

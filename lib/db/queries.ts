@@ -164,3 +164,34 @@ export function updateSource(id: string, updates: Partial<NewsSource>): void {
   const updated = { ...source, ...updates };
   saveSource(updated);
 }
+
+/**
+ * Batch update article AI fields (summary, tags) with transaction
+ * Implements v2 global AI refresh (FR-002)
+ */
+export function batchUpdateArticleAI(
+  updates: Array<{ articleId: string; summary: string | null; tags: string[] | null }>
+): void {
+  console.log(`📝 batchUpdateArticleAI: Updating ${updates.length} articles`);
+  console.log('Sample update:', updates[0]);
+  
+  const updateStmt = db.prepare(
+    'UPDATE articles SET summary = ?, tags = ? WHERE id = ?'
+  );
+
+  // Use transaction for atomic batch update
+  const transaction = db.transaction((items: typeof updates) => {
+    for (const item of items) {
+      const tagsJson = item.tags ? JSON.stringify(item.tags) : null;
+      console.log(`Updating article ${item.articleId}:`, {
+        summary: item.summary?.substring(0, 50),
+        tags: item.tags
+      });
+      const result = updateStmt.run(item.summary, tagsJson, item.articleId);
+      console.log(`  Result: changes=${result.changes}`);
+    }
+  });
+
+  transaction(updates);
+  console.log('✅ Transaction committed');
+}

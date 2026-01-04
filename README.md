@@ -29,6 +29,7 @@ A Next.js application for collecting, filtering, and exporting news from multipl
 
 1. **Clone the repository**:
    ```bash
+   git clone <repository-url>
    cd tiktok-interview
    ```
 
@@ -37,16 +38,20 @@ A Next.js application for collecting, filtering, and exporting news from multipl
    npm install
    ```
 
-3. **Initialize the database**:
+3. **Start the development server** (database will be auto-initialized):
    ```bash
-   npm run db:init
+   npm run dev
    ```
+   
+   The database will be automatically created on first run with default news sources.
 
-4. **(Optional) Configure LLM integration**:
+4. **(Optional) Configure AI features**:
    ```bash
    cp .env.local.example .env.local
-   # Edit .env.local and add your ALIYUN_BAILIAN_API_KEY
+   # Edit .env.local and add your DASHSCOPE_API_KEY
    ```
+   
+   Without API key, the app works normally but AI-generated summaries and tags will not be available.
 
 ## Usage
 

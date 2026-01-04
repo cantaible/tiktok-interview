@@ -1,9 +1,9 @@
 # Feature Specification: Local News Harvester MVP
 
-**Feature Branch**: `001-news-harvester-mvp`  
+**Feature Branch**: `002-ui-ux-improvements`  
 **Created**: 2026-01-04  
 **Status**: Draft  
-**Input**: User description: "根据requirement.md，帮我设计合理的ui，数据源暂时不用管，我之后进行处理，对于使用的技术，use the best guess you think reasonable"
+**Input**: 修改现在的spec，关于数据源，不能使用编造的mock数据，只能使用真实的RSS/Atom或者网页url，第二，加一个ai的button，用于刷新ai提取的相关内容，第三，根据日期筛选那里，要增加一个清空日期筛选的选项，以支持选择所有日期的新闻，第四，更新设计ui，使其更加美观"
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -30,7 +30,7 @@ A user wants to quickly find relevant news by filtering the card list by date, s
 
 **Why this priority**: Filtering dramatically improves reading efficiency by reducing noise - a key pain point mentioned in requirements. Builds on P1's card display.
 
-**Independent Test**: Can be tested independently by pre-populating mock news data, then applying filters to verify card list updates correctly. Delivers value even without live scraping.
+**Independent Test**: Can be tested independently by using real scraped articles from database (from v1.0.0 or fresh scraping), then applying filters to verify card list updates correctly. Delivers value even without live scraping.
 
 **Acceptance Scenarios**:
 
@@ -91,6 +91,7 @@ A user wants to export filtered news data to JSON or CSV format for further anal
 - What if LLM API (Aliyun Bailian) fails or times out? → Display article without AI-generated summary/tags, show "Summary unavailable" placeholder
 - What happens when user adds 50+ sources? → Warn user about potential performance impact, recommend 10-15 sources for optimal experience
 - How to handle non-UTF8 encoded content? → Auto-detect encoding, convert to UTF-8, fallback to replacing unreadable chars with �
+- What constitutes "mock data" vs "real data"? → Mock data = any article content not scraped from live RSS/Atom feeds or web URLs during application runtime. Pre-configured JSON files with fabricated articles (e.g., data/news-articles.json) are strictly forbidden per FR-008 and FR-031. Only articles fetched via HTTP from real sources are permitted.
 
 ## Requirements *(mandatory)*
 
@@ -127,8 +128,10 @@ A user wants to export filtered news data to JSON or CSV format for further anal
 - **FR-024**: System MUST persist active filter state (date, sources, tags) to localStorage and automatically restore on browser refresh or next visit
 - **FR-025**: System MUST provide "Reset to Default" option in FilterBar to clear all saved filter preferences and return to default view (all articles, newest first)
 - **FR-026**: System MUST sort cards by publish date (newest first) as default, with visible sort toggle for oldest-first
-- **FR-025**: System MUST show elegant loading skeleton/shimmer effect while fetching news or refreshing AI content
-- **FR-026**: System MUST show well-designed empty state with helpful message when no articles match filters- **FR-029**: System MUST display Toast notifications (3-second auto-dismiss) for scraping results showing success/failure statistics (e.g., "3 sources fetched, 2 failed")
+- **FR-027**: System MUST show elegant loading skeleton/shimmer effect while fetching news or refreshing AI content
+- **FR-028**: System MUST show well-designed empty state with helpful message when no articles match filters
+- **FR-029**: System MUST display Toast notifications (3-second auto-dismiss) for scraping results showing success/failure statistics (e.g., "3 sources fetched, 2 failed")
+
 #### Local Persistence & Export
 - **FR-030**: System MUST pre-configure 5 real RSS sources (机器之心, 量子位, TechCrunch, The Verge, AI News) and automatically fetch 20-30 articles on first startup to ensure immediate usability
 - **FR-031**: System MUST persist fetched news articles from REAL sources only (no mock data) using SQLite (primary recommendation), IndexedDB, or JSON file storage
