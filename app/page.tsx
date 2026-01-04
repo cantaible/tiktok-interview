@@ -7,7 +7,7 @@ import { EmptyState } from "@/components/EmptyState";
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { FilterBar } from "@/components/FilterBar";
 import ExportButtons from "@/components/ExportButtons";
-import { Button } from "@/components/ui/Button";
+import Header from "@/components/Header";
 import toast from "react-hot-toast";
 import { format } from "date-fns";
 
@@ -34,14 +34,23 @@ export default function HomePage() {
 
   const loadArticles = async () => {
     try {
+      console.log('🔄 Loading articles...');
       setLoading(true);
       const response = await fetch("/api/articles");
+      console.log('📡 API response status:', response.status);
+      
+      if (!response.ok) {
+        throw new Error(`API returned ${response.status}`);
+      }
+      
       const data = await response.json();
+      console.log('✅ Articles loaded:', data.articles?.length || 0);
       setAllArticles(data.articles || []);
     } catch (error) {
-      console.error("Failed to load articles:", error);
+      console.error("❌ Failed to load articles:", error);
       toast.error("Failed to load articles");
     } finally {
+      console.log('✅ Setting loading to false');
       setLoading(false);
     }
   };
@@ -108,7 +117,10 @@ export default function HomePage() {
   const handleFetchNews = async () => {
     try {
       setScraping(true);
-      toast.loading("Fetching news from sources...", { id: "scraping" });
+      toast.loading("Fetching news from sources...", { 
+        id: "scraping",
+        duration: Infinity // 持续显示直到手动关闭
+      });
 
       const response = await fetch("/api/scrape", {
         method: "POST",
@@ -143,10 +155,20 @@ export default function HomePage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div>
+    <>
+      {/* v2 Header with AI Refresh */}
+      <Header 
+        articleIds={filteredArticles.map(a => a.id)}
+        onFetchNews={handleFetchNews}
+        onRefreshComplete={async () => {
+          await loadArticles();
+          await loadStats();
+        }}
+      />
+      
+      <div className="container mx-auto px-4 py-8">
+        {/* Page Title */}
+        <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900">News Feed</h2>
           <p className="text-gray-600 mt-1">
             {filteredArticles.length > 0
@@ -154,8 +176,28 @@ export default function HomePage() {
               : "No articles yet"}
           </p>
         </div>
-        <div className="flex gap-3">
-          {filteredArticles.length > 0 && (
+
+        {/* Filter Bar */}
+        {!loading && allArticles.length > 0 && (
+          <FilterBar
+            selectedDate={selectedDate}
+            onDateChange={setSelectedDate}
+            sources={sources}
+            selectedSources={selectedSources}
+            onSourcesChange={setSelectedSources}
+            topTags={topTags}
+            selectedTags={selectedTags}
+            onTagsChange={setSelectedTags}
+            sortOrder={sortOrder}
+            onSortChange={setSortOrder}
+            onClearFilters={handleClearFilters}
+            hasActiveFilters={hasActiveFilters}
+          />
+        )}
+
+        {/* Export Buttons */}
+        {filteredArticles.length > 0 && (
+          <div className="mb-6 flex justify-end">
             <ExportButtons
               filters={{
                 date: selectedDate,
@@ -163,45 +205,24 @@ export default function HomePage() {
                 tags: selectedTags,
               }}
             />
-          )}
-          <Button onClick={handleFetchNews} disabled={scraping || loading}>
-            {scraping ? "Fetching..." : "Fetch News Now"}
-          </Button>
-        </div>
+          </div>
+        )}
+
+        {/* Articles Grid */}
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <LoadingSkeleton count={6} />
+          </div>
+        ) : filteredArticles.length === 0 ? (
+          <EmptyState hasFilters={hasActiveFilters} />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredArticles.map((article) => (
+              <NewsCard key={article.id} article={article} />
+            ))}
+          </div>
+        )}
       </div>
-
-      {/* Filter Bar */}
-      {!loading && allArticles.length > 0 && (
-        <FilterBar
-          selectedDate={selectedDate}
-          onDateChange={setSelectedDate}
-          sources={sources}
-          selectedSources={selectedSources}
-          onSourcesChange={setSelectedSources}
-          topTags={topTags}
-          selectedTags={selectedTags}
-          onTagsChange={setSelectedTags}
-          sortOrder={sortOrder}
-          onSortChange={setSortOrder}
-          onClearFilters={handleClearFilters}
-          hasActiveFilters={hasActiveFilters}
-        />
-      )}
-
-      {/* Articles Grid */}
-      {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <LoadingSkeleton count={6} />
-        </div>
-      ) : filteredArticles.length === 0 ? (
-        <EmptyState hasFilters={hasActiveFilters} />
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredArticles.map((article) => (
-            <NewsCard key={article.id} article={article} />
-          ))}
-        </div>
-      )}
-    </div>
+    </>
   );
 }

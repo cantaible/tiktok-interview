@@ -56,7 +56,7 @@
 
 1. **克隆仓库**：
    ```bash
-   git clone <仓库地址>
+   git clone https://github.com/cantaible/tiktok-interview.git
    cd tiktok-interview
    ```
 
@@ -65,25 +65,23 @@
    npm install
    ```
 
-3. **初始化数据库**：
+3. **启动开发服务器**：
    ```bash
-   npm run db:seed
+   npm run dev
    ```
-   这将创建 SQLite 数据库并导入示例新闻源和文章。
+   
+   首次运行时，数据库将自动创建并加载 10 个默认新闻源。
+   
+   在浏览器中打开 http://localhost:3000
 
 4. **（可选）配置 LLM 集成**：
    ```bash
    cp .env.local.example .env.local
    # 编辑 .env.local 并添加你的阿里云百炼 API 密钥
    ```
-   详见下方 [LLM 配置](#llm-配置阿里云百炼) 章节。
-
-5. **启动开发服务器**：
-   ```bash
-   npm run dev
-   ```
+   > **注意**：没有 API 密钥时应用仍可正常工作，只是不会生成 AI 摘要和标签。
    
-   在浏览器中打开 http://localhost:3000
+   详见下方 [LLM 配置](#llm-配置阿里云百炼) 章节。
 
 ## 使用方法
 

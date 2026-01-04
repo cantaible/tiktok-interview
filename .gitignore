@@ -26,6 +26,10 @@ data/news.db-wal
 *.db
 *.db-journal
 
+# Mock data (v2 - constitution compliance)
+data/news-articles.json
+**/news-articles.json
+
 # Logs
 *.log
 npm-debug.log*

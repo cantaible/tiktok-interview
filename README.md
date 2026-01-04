@@ -2,6 +2,123 @@
 
 A Next.js application for collecting, filtering, and exporting news from multiple RSS feeds and web sources.
 
+---
+
+## 📦 交付物说明（Deliverables）
+
+本项目完整包含以下四项交付物，满足面试要求：
+
+### 交付物 A：技术规格说明书（The Spec）
+
+✅ **已包含在项目中**
+
+规格文档位于 `specs/` 目录，采用 Spec-Driven Development 开发范式：
+
+- 📁 **主规格**: [`specs/002-ui-ux-improvements/spec.md`](specs/002-ui-ux-improvements/spec.md)
+- 📄 **数据模型**: [`specs/002-ui-ux-improvements/data-model.md`](specs/002-ui-ux-improvements/data-model.md)  
+- 📋 **开发计划**: [`specs/002-ui-ux-improvements/plan.md`](specs/002-ui-ux-improvements/plan.md)
+- ✅ **任务清单**: [`specs/002-ui-ux-improvements/tasks.md`](specs/002-ui-ux-improvements/tasks.md)
+
+规格文档包含：
+- Data Models（NewsItem、Source、Tag、UserState 等完整 Schema）
+- 抓取与去重策略（URL 规范化 + Levenshtein 算法，85% 阈值）
+- API Interface 定义（所有路由端点与数据契约）
+- UI 组件层级描述（页面/组件树结构图）
+
+---
+
+### 交付物 B：源代码与运行指南（Source Code）
+
+✅ **可在本地一键启动**
+
+**快速开始**（3 步）：
+
+```bash
+# 1. 克隆仓库
+git clone https://github.com/cantaible/tiktok-interview.git
+cd tiktok-interview
+
+# 2. 安装依赖
+npm install
+
+# 3. 启动项目（首次运行会自动初始化数据库）
+npm run dev
+```
+
+**首次运行时会自动**：
+- ✅ 创建 SQLite 数据库（`data/news.db`）
+- ✅ 启动开发服务器在 http://localhost:3000
+
+控制台会显示：
+```
+🔧 Database not found, initializing...
+✅ Database initialized with 10 news sources
+```
+
+**（可选）配置 AI 功能**：
+
+如需 AI 生成摘要和标签（使用阿里云百炼 API）：
+
+```bash
+# 复制配置文件
+cp .env.local.example .env.local
+
+# 编辑 .env.local 添加 API Key
+# DASHSCOPE_API_KEY=sk-your-api-key-here
+```
+
+> **注意**：没有 API Key 应用仍可正常工作，只是不会生成 AI 摘要和标签。
+
+**验证安装**：
+
+访问 http://localhost:3000，你应该看到：
+1. 主页面显示新闻列表（初始为空）
+2. 点击 **"Fetch News"** 抓取新闻
+3. 等待几秒钟，会显示从 10 个新闻源抓取的文章
+4. 可以使用日期、来源、标签进行筛选
+
+---
+
+### 交付物 C：开发复盘报告（Process Documentation）
+
+📄 **查看完整复盘报告**: [PROCESS_DOCUMENTATION.md](PROCESS_DOCUMENTATION.md)
+
+**报告概要**：
+- 🛠 **开发工具**: VSCode + GitHub Copilot (Claude Sonnet 4.5)
+- 📋 **开发方法**: Spec-Driven Development（参考 GitHub spec-kit）
+- 🔄 **迭代流程**: Constitution → Specification → Clarification → Plan → Tasks → Implement
+- 🐛 **关键修正案例**:
+  - 案例 1：通过完善 Spec 修正 AI 编造数据源问题
+  - 案例 2：通过明确规则解决日期筛选语义不一致
+
+点击上方链接查看详细的开发过程、AI 协作方式与纠错案例。
+
+---
+
+### 交付物 D：运行证据（Proof of Work）
+
+📸 **截图展示**（保存在 `screenshots/` 目录）：
+
+#### 1. Spec 编写界面截图
+![Spec 编写](screenshots/spec-writing.png)
+
+#### 2. AI 工具生成代码过程截图  
+![AI 代码生成](screenshots/ai-code-generation.png)
+
+#### 3. App 运行成功界面截图
+![应用运行](screenshots/app-running.png)
+
+#### 4. 新闻抓取结果展示
+![新闻抓取](screenshots/news-fetching.png)
+
+#### 5. 筛选功能
+![筛选](screenshots/filtering.png)
+
+#### 6. 导出功能
+![导出](screenshots/export.png)
+
+---
+
 ## Features
 
 - 📰 **Manual News Collection**: Fetch news from configured RSS feeds and web pages
@@ -29,6 +146,7 @@ A Next.js application for collecting, filtering, and exporting news from multipl
 
 1. **Clone the repository**:
    ```bash
+   git clone <repository-url>
    cd tiktok-interview
    ```
 
@@ -37,16 +155,20 @@ A Next.js application for collecting, filtering, and exporting news from multipl
    npm install
    ```
 
-3. **Initialize the database**:
+3. **Start the development server** (database will be auto-initialized):
    ```bash
-   npm run db:init
+   npm run dev
    ```
+   
+   The database will be automatically created on first run with default news sources.
 
-4. **(Optional) Configure LLM integration**:
+4. **(Optional) Configure AI features**:
    ```bash
    cp .env.local.example .env.local
-   # Edit .env.local and add your ALIYUN_BAILIAN_API_KEY
+   # Edit .env.local and add your DASHSCOPE_API_KEY
    ```
+   
+   Without API key, the app works normally but AI-generated summaries and tags will not be available.
 
 ## Usage
 

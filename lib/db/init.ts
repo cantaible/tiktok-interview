@@ -15,9 +15,8 @@ export function initDatabase() {
   console.log("✅ Database initialized successfully");
   console.log("📍 Location:", path.join(process.cwd(), "data", "news.db"));
 
-  // Load seed data if available
+  // Load real RSS sources only (no mock articles)
   const seedSourcesPath = path.join(process.cwd(), "data", "news-sources.json");
-  const seedArticlesPath = path.join(process.cwd(), "data", "news-articles.json");
 
   if (fs.existsSync(seedSourcesPath)) {
     const sources = JSON.parse(fs.readFileSync(seedSourcesPath, "utf-8"));
@@ -37,31 +36,8 @@ export function initDatabase() {
         source.errorCount || 0
       );
     }
-    console.log(`✅ Seeded ${sources.length} sources from news-sources.json`);
-  }
-
-  if (fs.existsSync(seedArticlesPath)) {
-    const articles = JSON.parse(fs.readFileSync(seedArticlesPath, "utf-8"));
-    const stmt = db.prepare(`
-      INSERT OR IGNORE INTO articles (id, title, sourceURL, sourceName, publishedAt, scrapedAt, summary, tags, thumbnailURL, rawContent)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
-    for (const article of articles) {
-      stmt.run(
-        article.id,
-        article.title,
-        article.sourceURL,
-        article.sourceName,
-        article.publishedAt,
-        article.scrapedAt,
-        article.summary || null,
-        article.tags ? JSON.stringify(article.tags) : null,
-        article.thumbnailURL || null,
-        article.rawContent || null
-      );
-    }
-    console.log(`✅ Seeded ${articles.length} articles from news-articles.json`);
+    console.log(`✅ Seeded ${sources.length} real RSS sources from news-sources.json`);
+    console.log(`ℹ️  No mock articles loaded - use "Fetch News" button to scrape real content`);
   }
 
   db.close();
