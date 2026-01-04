@@ -114,7 +114,7 @@ A user wants to export filtered news data to JSON or CSV format for further anal
 - **FR-013**: System MUST handle LLM API failures gracefully, storing articles without AI-generated fields if API unavailable
 - **FR-014**: System MUST load Aliyun Bailian API key from environment variable (e.g., `.env.local` file), never hardcoded
 - **FR-015**: System MUST display scraping progress indicator during fetch operation
-- **FR-016**: System MUST provide global "Refresh AI Content" button in header/toolbar to regenerate summaries and tags for ALL currently displayed articles in one batch operation
+- **FR-016**: System MUST provide global "Refresh AI Content" button in header/toolbar to regenerate summaries and tags for ALL currently displayed articles using batch processing (5 articles per batch), showing progress bar with article count (e.g., "15/47 articles") and cancel button
 
 #### Presentation Layer (UI/UX)
 - **FR-017**: System MUST display news articles in modern card-based grid layout with enhanced visual design (responsive: 1 column mobile, 2-3 columns tablet/desktop)
@@ -124,15 +124,17 @@ A user wants to export filtered news data to JSON or CSV format for further anal
 - **FR-021**: System MUST provide tag filter with search input and tag cloud/chips showing most frequent tags, displaying selected tags as active chips with individual [×] buttons
 - **FR-022**: System MUST provide prominent "Clear All Filters" button that resets ALL active filters (date, sources, tags) simultaneously and hides all filter badges
 - **FR-023**: System MUST show visual feedback for active filters: colored/outlined badges for date and source filters, highlighted chips for tag filters
-- **FR-024**: System MUST sort cards by publish date (newest first) as default, with visible sort toggle for oldest-first
+- **FR-024**: System MUST persist active filter state (date, sources, tags) to localStorage and automatically restore on browser refresh or next visit
+- **FR-025**: System MUST provide "Reset to Default" option in FilterBar to clear all saved filter preferences and return to default view (all articles, newest first)
+- **FR-026**: System MUST sort cards by publish date (newest first) as default, with visible sort toggle for oldest-first
 - **FR-025**: System MUST show elegant loading skeleton/shimmer effect while fetching news or refreshing AI content
-- **FR-026**: System MUST show well-designed empty state with helpful message when no articles match filters
-
+- **FR-026**: System MUST show well-designed empty state with helpful message when no articles match filters- **FR-029**: System MUST display Toast notifications (3-second auto-dismiss) for scraping results showing success/failure statistics (e.g., "3 sources fetched, 2 failed")
 #### Local Persistence & Export
-- **FR-027**: System MUST persist fetched news articles from REAL sources only (no mock data) using SQLite (primary recommendation), IndexedDB, or JSON file storage
-- **FR-028**: System MUST support export to JSON format as downloadable file, including all displayed article fields
-- **FR-029**: System MUST support export to CSV format with proper header row and field escaping
-- **FR-030**: Export MUST respect active filters (export only visible articles, not entire database)
+- **FR-030**: System MUST pre-configure 5 real RSS sources (机器之心, 量子位, TechCrunch, The Verge, AI News) and automatically fetch 20-30 articles on first startup to ensure immediate usability
+- **FR-031**: System MUST persist fetched news articles from REAL sources only (no mock data) using SQLite (primary recommendation), IndexedDB, or JSON file storage
+- **FR-032**: System MUST support export to JSON format as downloadable file, including all displayed article fields
+- **FR-033**: System MUST support export to CSV format with proper header row and field escaping
+- **FR-034**: Export MUST respect active filters (export only visible articles, not entire database)
 
 ### Key Entities *(include if feature involves data)*
 
@@ -214,13 +216,14 @@ A user wants to export filtered news data to JSON or CSV format for further anal
 
 ### Enhanced Design Tokens
 - **Color Palette**: 
-  - Primary: Gradient blue (#3B82F6 → #6366F1)
+  - Primary: Gradient blue-purple (#3B82F6 → #6366F1) for Header and primary actions
   - Secondary: Slate gray (#64748B)
   - Success: Emerald green (#10B981)
-  - Error: Rose red (#EF4444)
-  - Background: Light gray (#F8FAFC)
-  - Card: White (#FFFFFF) with subtle shadow
+  - Error: Rose red (#EF4444) for failed sources
+  - Background: Light gray (#F8FAFC) for page background
+  - Card: White (#FFFFFF) with subtle gradient border
   - Accent: Purple (#8B5CF6) for AI-related features
+  - Filter badges: Color-coded (Date: Blue #3B82F6, Sources: Green #10B981, Tags: Purple #8B5CF6)
 
 - **Typography**: 
   - System font stack: -apple-system, SF Pro, Segoe UI, Inter, Roboto
@@ -284,6 +287,20 @@ A user wants to export filtered news data to JSON or CSV format for further anal
 - **Local-First**: Application must run locally without cloud deployment (Next.js dev server or static build)
 - **LLM Integration**: Must use Aliyun Bailian API (DeepSeek-V3, DeepSeek-R1, or Qwen-Max recommended)
 - **Security**: API keys in `.env.local`, never committed to git (`.gitignore` enforcement)
+
+## Clarifications
+
+### Session 2026-01-04
+
+- Q: When user clicks global "Refresh AI Content" button, how should batch processing work? → A: Process in batches of 5 articles, display progress bar showing "Refreshing... 15/47 articles", allow user to cancel mid-process. Cost control: ~¥0.05 per batch.
+
+- Q: Should filter states (date, sources, tags) persist when user refreshes browser or closes tab? → A: Save filter state to localStorage and automatically restore on next visit. Provide "Reset to Default" option in FilterBar to clear saved preferences.
+
+- Q: With "no mock data" requirement, how should first-time installation handle empty database? → A: Pre-configure 5 real RSS sources (机器之心, 量子位, TechCrunch, The Verge, AI News). On first startup, automatically fetch 20-30 real articles from these sources to ensure immediate usability.
+
+- Q: How should UI gradient color scheme be applied across components? → A: Page background #F8FAFC (light gray), Header with blue-purple gradient (#3B82F6 → #6366F1) + glassmorphism, white cards with subtle gradient borders, primary buttons use gradient, active filter badges show color-coded (blue/green/purple).
+
+- Q: When RSS fetch fails for 2-3 out of 5 sources, how should user be notified? → A: Display Toast notification (3s auto-dismiss) with statistics "3 sources fetched, 2 failed". Mark failed sources with red error icon + errorCount in source management page for detailed troubleshooting.
 
 ## Out of Scope (for MVP)
 
