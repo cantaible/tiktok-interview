@@ -12,12 +12,18 @@ A Next.js application for collecting, filtering, and exporting news from multipl
 
 ✅ **已包含在项目中**
 
-规格文档位于 `specs/` 目录，采用 Spec-Driven Development 开发范式：
+规格文档位于 `specs/` 目录，采用 Spec-Driven Development 开发范式，进行了两个版本的迭代：
+第一轮，主要功能开发
+- 📁 **主规格**: [`specs/001-news-harvester-mvp/spec.md`](specs/001-news-harvester-mvp/spec.md)
+- 📄 **数据模型**: [`specs/001-news-harvester-mvp/data-model.md`](specs/001-news-harvester-mvp/data-model.md)  
+- 📋 **开发计划**: [`specs/001-news-harvester-mvp/plan.md`](specs/001-news-harvester-mvp/plan.md)
+- ✅ **任务清单**: [`specs/001-news-harvester-mvp/tasks.md`](specs/001-news-harvester-mvp/tasks.md)
 
-- 📁 **主规格**: [`specs/002-ui-ux-improvements/spec.md`](specs/002-ui-ux-improvements/spec.md)
-- 📄 **数据模型**: [`specs/002-ui-ux-improvements/data-model.md`](specs/002-ui-ux-improvements/data-model.md)  
-- 📋 **开发计划**: [`specs/002-ui-ux-improvements/plan.md`](specs/002-ui-ux-improvements/plan.md)
-- ✅ **任务清单**: [`specs/002-ui-ux-improvements/tasks.md`](specs/002-ui-ux-improvements/tasks.md)
+第二轮，功能完善
+- 📁 **主规格**: [`specs/002-ui-ux-improvements/spec.md`](specs/001-news-harvester-mvp/spec.md)
+- 📄 **数据模型**: [`specs/002-ui-ux-improvements/data-model.md`](specs/001-news-harvester-mvp/data-model.md)  
+- 📋 **开发计划**: [`specs/002-ui-ux-improvements/plan.md`](specs/001-news-harvester-mvp/plan.md)
+- ✅ **任务清单**: [`specs/002-ui-ux-improvements/tasks.md`](specs/001-news-harvester-mvp/tasks.md)
 
 规格文档包含：
 - Data Models（NewsItem、Source、Tag、UserState 等完整 Schema）
