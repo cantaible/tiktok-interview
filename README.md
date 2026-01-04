@@ -47,7 +47,6 @@ npm run dev
 
 **首次运行时会自动**：
 - ✅ 创建 SQLite 数据库（`data/news.db`）
-- ✅ 加载 10 个默认新闻源（科技媒体 RSS）
 - ✅ 启动开发服务器在 http://localhost:3000
 
 控制台会显示：
@@ -112,8 +111,11 @@ cp .env.local.example .env.local
 #### 4. 新闻抓取结果展示
 ![新闻抓取](screenshots/news-fetching.png)
 
-#### 5. 筛选与导出功能
-![筛选导出](screenshots/filtering-export.png)
+#### 5. 筛选功能
+![筛选](screenshots/filtering.png)
+
+#### 6. 导出功能
+![导出](screenshots/export.png)
 
 ---
 
